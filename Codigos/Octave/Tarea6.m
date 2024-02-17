@@ -6,7 +6,7 @@ while true
     disp('2. Buscar por artista');
     disp('3. Buscar por canción');
     disp('4. Salir');
-    opcion = input('Elige una opción: ', 's');
+    opcion = input('Elige una opcion: ', 's');
 
     switch opcion
         case '1'
@@ -14,17 +14,25 @@ while true
             disp(N.data);
         case '2'
             artista = input('Introduce el nombre del artista: ', 's');
-            query = sprintf("SELECT * FROM tare6 WHERE artista LIKE '%%%s%%';", artista);
-            rs = pq_exec_params(conn, query);
-            disp(rs.data);
+            consulta = sprintf("SELECT * FROM tare6 WHERE artista ILIKE '%%%s%%';", artista);%consulta en la tabla
+            rs = pq_exec_params(conn, consulta);
+            if isempty(rs.data) %% ve si disp(rs.data)  esta vacio para poner un mensaje que no se encuentra lo que busca
+                disp('No se encontraron resultados. Selecciona la opcion 1 para ver los artistas disponibles.');
+            else
+                disp(rs.data);
+            end
         case '3'
-            cancion = input('Introduce el nombre de la canción: ', 's');
-            query = sprintf("SELECT * FROM tare6 WHERE cancion = '%s';", cancion);
-            rs = pq_exec_params(conn, query);
-            disp(rs.data);
+            cancion = input('Introduce el nombre de la cancion: ', 's');
+            consulta = sprintf("SELECT * FROM tare6 WHERE cancion ILIKE '%%%s%%';", cancion);
+            rs = pq_exec_params(conn, consulta);
+            if isempty(rs.data)
+                disp('No se encontraron resultados. Selecciona la opcion 2 para ver las canciones disponibles.');
+            else
+                disp(rs.data);
+            end
         case '4'
             break;
         otherwise
-            disp('Opción no válida');
+            disp('Opcion no valida');
     end
 end
