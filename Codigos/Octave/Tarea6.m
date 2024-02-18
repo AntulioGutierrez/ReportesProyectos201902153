@@ -24,6 +24,7 @@ while true
         case '3'
             cancion = input('Introduce el nombre de la cancion: ', 's');
             consulta = sprintf("SELECT * FROM tare6 WHERE cancion ILIKE '%%%s%%';", cancion);
+            
             rs = pq_exec_params(conn, consulta);
             if isempty(rs.data)
                 disp('No se encontraron resultados. Selecciona la opcion 2 para ver las canciones disponibles.');
