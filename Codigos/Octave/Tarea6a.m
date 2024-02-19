@@ -18,36 +18,36 @@ while true
             edad = input('Introdusca la edad del estudiante: ', 's');
             genero = input('Introdusca el género del estudiante: ', 's');
             direccion = input('Introdusca la dirección del estudiante: ', 's');
-            registro = sprintf("INSERT INTO estudiantes (nombre, edad, genero, direccion) VALUES ('%s', '%s', '%s', '%s');", nombre, edad, genero, direccion);
+            registro = sprintf("INSERT INTO estudiantes (nombre, edad, genero, direccion) VALUES ('%s', %s, '%s', '%s');", nombre, edad, genero, direccion);
             [err, msg] = lasterr();
-            if isempty(err)
-                pq_exec_params(conn, registro);
+            try
+                N=pq_exec_params(conn, registro);
                 disp('Estudiante agregado exitosamente.');
-            else
-                disp(['Error: ' msg]);
+            catch ME
+                disp(['Error: ' ME.message]);
             end
         case '2'
-            id = input('Introduce el ID del estudiante a editar: ', 's');
-            nombre = input('Introduce el nuevo nombre del estudiante: ', 's');
-            edad = input('Introduce la nueva edad del estudiante: ', 's');
-            genero = input('Introduce el nuevo género del estudiante: ', 's');
-            direccion = input('Introduce la nueva dirección del estudiante: ', 's');
+            id = input('Introdusca el id del estudiante a editar: ', 's');
+            nombre = input('Introdusca el nuevo nombre del estudiante: ', 's');
+            edad = input('Introdusca la nueva edad del estudiante: ', 's');
+            genero = input('Introdusca el nuevo género del estudiante: ', 's');
+            direccion = input('Introdusca la nueva dirección del estudiante: ', 's');
             consulta = sprintf("UPDATE estudiantes SET nombre = '%s', edad = '%s', genero = '%s', direccion = '%s' WHERE id = %s;", nombre, edad, genero, direccion, id);
             [err, msg] = lasterr();
-            if isempty(err)
-                pq_exec_params(conn, consulta);
+            try
+                N=pq_exec_params(conn, consulta);
                 disp('Información del estudiante actualizada exitosamente.');
-            else
+            catch ME
                 disp(['Error: ' msg]);
             end
         case '3'
-            id = input('Introduce el ID del estudiante a eliminar: ', 's');
+            id = input('Introdusca el ID del estudiante a eliminar: ', 's');
             consulta = sprintf("DELETE FROM estudiantes WHERE id = %s;", id);
             [err, msg] = lasterr();
-            if isempty(err)
+            try
                 pq_exec_params(conn, consulta);
                 disp('Estudiante eliminado exitosamente.');
-            else
+            catch ME
                 disp(['Error: ' msg]);
             end
         case '4'
