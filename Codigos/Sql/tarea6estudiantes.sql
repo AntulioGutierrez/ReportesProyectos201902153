@@ -5,4 +5,4 @@
 --ALTER TABLE estudiantes DROP COLUMN codigo;
 
 
-select *from estudiantes;
+select * from estudiantes;
