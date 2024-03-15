@@ -1,0 +1,119 @@
+<!DOCTYPE  html>
+
+
+{% load static %}
+
+<html>
+    <head>
+        <title>{% block title %} {% endblock %}</title>
+        <link rel="stylesheet" type="text/css" href="{% static 'css/mod.css' %}">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1" />
+    </head>
+    <body>
+        <!-- encabezado -->
+        <nav class="navbar navbar-expand-lg navbar-light shadow">
+            <nav class="navbar bg-body-tertiary">
+                <div class="container">
+                  <a class="navbar-brand position-relative" href="{% url 'inicio' %}">
+                    <img src="{% static 'images/logo.jpeg'%}" alt="Zapatos" width="80" height="74">
+                  </a>
+                </div>
+              </nav>
+            <div class="container d-flex justify-content-between align-items-center">
+                <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="templatemo_main_nav" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="align-self-center collapse navbar-collapse flex-fill  d-lg-flex justify-content-lg-between nav nav-tabs" id="templatemo_main_nav">
+                    <div class="flex-fill">
+                        <ul class="nav justify-content-center">
+                            <li class="nav-item">
+                                <a class="btn btn-dark" href="{% url 'mujeres' %}">Damas</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="btn btn-dark" href="{% url 'ninos' %}">Niños</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="btn btn-dark" href="{% url 'hombres' %}">Caballeros</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="navbar align-self-center d-flex">
+                        <div class="cart-container ml-2">
+                            <a href="{% url 'carrito' %}">
+                                <img id="cart-icon" src="{% static 'images/car.png'%}" alt="Carrito de compras">
+                                <div id="cart-total" class="position-absolute top-0 start-100 translate-middle badge rounded-pill text-bg-secondary">55</div class="visually-hidden">
+                            </a>
+                        </div>                        
+                    </div>
+                </div>
+             </div>
+        </nav>
+            <!-- fin encabezado -->
+
+
+        <br/>
+
+        <div class = "container">
+            {% block content%}
+            
+            {%endblock%}
+        </div>
+        <br/>
+
+         <!-- pie -->
+        <footer class="bg-dark" id="tempaltemo_footer">
+            <div class="container">
+                <div class="row">
+
+                    <div class="col-md-4 pt-5">
+                        <h2 class="h2 text-success border-bottom pb-3 border-light logo">Zapatos</h2>
+                    </div>
+
+                    <div class="col-md-4 pt-5">
+                        <h2 class="h2 text-light border-bottom pb-3 border-light">Productos</h2>
+                        <ul class="list-unstyled text-light footer-link-list">
+                            <li><a class="text-decoration-none" href="{% url 'mujeres' %}">Zapatos Mujer</a></li>
+                            <li><a class="text-decoration-none" href="{% url 'hombres' %}">Zapatos Hombre</a></li>
+                            <li><a class="text-decoration-none" href="{% url 'ninos' %}">Zapatos Niños</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="col-md-4 pt-5">
+                        <h2 class="h2 text-light border-bottom pb-3 border-light">Infomacion</h2>
+                        <ul class="list-unstyled text-light footer-link-list">
+                            <li><a class="text-decoration-none" href="{% url 'inicio' %}">Inicio</a></li>
+                            <li><a class="text-decoration-none" href="#">Contact</a></li>
+                        </ul>
+                    </div>
+
+                </div>
+
+                <div class="row text-light mb-4">
+                    <div class="col-12 mb-3">
+                        <div class="w-100 my-3 border-top border-light"></div>
+                    </div>
+                    <div class="col-auto me-auto">
+                        <ul class="list-inline text-left footer-icons">
+                            <li class="list-inline-item border border-light rounded-circle text-center">
+                                <a class="text-light text-decoration-none" target="_blank" href="http://facebook.com/"><i class="fab fa-facebook-f fa-lg fa-fw"></i></a>
+                            </li>
+                            <li class="list-inline-item border border-light rounded-circle text-center">
+                                <a class="text-light text-decoration-none" target="_blank" href="https://www.instagram.com/"><i class="fab fa-instagram fa-lg fa-fw"></i></a>
+                            </li>
+                            <li class="list-inline-item border border-light rounded-circle text-center">
+                                <a class="text-light text-decoration-none" target="_blank" href="https://twitter.com/"><i class="fab fa-twitter fa-lg fa-fw"></i></a>
+                            </li>
+                            <li class="list-inline-item border border-light rounded-circle text-center">
+                                <a class="text-light text-decoration-none" target="_blank" href="https://www.linkedin.com/"><i class="fab fa-linkedin fa-lg fa-fw"></i></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    <!-- fin pie -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    </body>
+</html>

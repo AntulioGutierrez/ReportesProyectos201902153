@@ -1,0 +1,38 @@
+{% extends "general/main.html"%}
+{% load static %}
+
+{% block title %} Productos Mujer {% endblock %}
+
+{% block content %}
+
+<section class="py-5">
+    <div class="container">
+        <div class="row text-left p-2 pb-3">
+            <h2>Area de damas</h2>
+        </div>
+        <div id="carousel-related-product">
+
+            <div class="p-2 pb-3">
+                <div class="product-wap card rounded-5">
+                    <div class="card rounded-5">
+                        <img class="card-img rounded-5 img-fluid" src="{% static 'images/muj.jpeg'%}">
+                        <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
+                            <ul class="list-unstyled">
+                                <li><a class="btn btn-success text-white mt-2" href=""><img id="cart-icon" src="{% static 'images/car.png'%}" alt="Carrito de compras"></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <a href="" class="h3 text-decoration-none">niño</a>
+                        
+                        <ul class="w-100 list-unstyled d-flex justify-content-between mb-0">
+                            <li>M/L/X/XL</li>
+                        </ul>
+                        <p class="text-center mb-0">$20.00</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}
