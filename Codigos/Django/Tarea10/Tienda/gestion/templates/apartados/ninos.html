@@ -4,35 +4,32 @@
 {% block title %} Productos Niño {% endblock %}
 
 {% block content %}
-
-<section class="py-5">
-    <div class="container">
-        <div class="row text-left p-2 pb-3">
-            <h2>Area de damas</h2>
-        </div>
-        <div id="carousel-related-product">
-
-            <div class="p-2 pb-3">
-                <div class="product-wap card rounded-5">
-                    <div class="card rounded-5">
-                        <img class="card-img rounded-5 img-fluid" src="{% static 'images/nin.jpeg'%}">
-                        <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
-                            <ul class="list-unstyled">
-                                <li><a class="btn btn-success text-white mt-2" href=""><img id="cart-icon" src="{% static 'images/car.png'%}" alt="Carrito de compras"></a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <a href="" class="h3 text-decoration-none">niño</a>
-                        
-                        <ul class="w-100 list-unstyled d-flex justify-content-between mb-0">
-                            <li>M/L/X/XL</li>
-                        </ul>
-                        <p class="text-center mb-0">$20.00</p>
-                    </div>
+    <section class="container py-5">
+        <div class="container py-5">
+            <div class="row text-center pt-3">
+                <div class="col-lg-6 m-auto">
+                    <h1 class="h1">Zapatos idales para niños</h1>
+                    <p>
+                        estilos unicos
+                    </p>
                 </div>
             </div>
+            
         </div>
-    </div>
-</section>
+        <div class="container bg-light">
+            <div class="row">
+                {% for producto in productos %}
+                    <div class="col-12 col-md-4 p-5 mt-3">
+                        <a href="#"><img src="{{product.imageURL}}" class="rounded-circle img-fluid border"></a>
+                        <h3 class="text-center mt-3 mb-3">{{ producto.nombre }}</h3>
+                        <h4 class="text-center mt-3 mb-3">Q{{ producto.precio |floatformat:2}}</h4>
+                        <p class="text-center"><a class="btn btn-success">Añadir al Carrito</a></p>
+                    </div>
+                    {% if forloop.counter|divisibleby:3 %}
+                        </div><div class="row ">
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </section>  
 {% endblock content %}
