@@ -92,17 +92,22 @@ def procesarOrden(request):
     datosrecibidos = json.loads(request.body)
 
     if request.user.is_authenticated:
+        mensaje = 'este es con usuario'
         cliente = request.user.clientes 
-        pedido, created = Pedidos.objects.get_or_create(cliente=cliente, entregado=False)
-        total = datosrecibidos['Formulario']['total'].replace(',', '.')
-        total = float(total)
-        pedido.mas_infomracion = transaccionid
+        pedido, created = Pedidos.objects.get_or_create(cliente=cliente, entregado=False)        
+    else:
+        mensaje = 'Usuario no ingresado o autentificado'
+        cliente, pedido = ordenUsuarioNoingresado(request, datosrecibidos)
         
-        if total == pedido.precio_del_carrito:
-            pedido.entregado = True
+    total = datosrecibidos['Formulario']['total'].replace(',', '.')
+    total = float(total)
+    pedido.mas_infomracion = transaccionid
+        
+    if total == pedido.precio_del_carrito:
+        pedido.entregado = True
         pedido.save()
-        if pedido.entregado == True:
-            Entregas.objects.create(
+    if pedido.entregado == True:
+        Entregas.objects.create(
                 cliente = cliente,
                 pedido = pedido,
                 direccion =datosrecibidos['Ubicacion']['direccion'],
@@ -110,8 +115,7 @@ def procesarOrden(request):
                 municipio =datosrecibidos['Ubicacion']['municipio'],
                 zona =datosrecibidos['Ubicacion']['zona'],
             )
-        mensaje = 'pago completo'
-    else:
-        mensaje = 'Usuario no ingresado o autentificado'
+        
+    mensaje = 'Orden procesada'
         
     return JsonResponse({'mensaje': mensaje}, safe=False)

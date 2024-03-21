@@ -2,39 +2,40 @@ import json
 from .models import *
 
 def cookieCarrito(request):
-    try :
-        carrito = json.loads(request.COOKIES['carrito'])
-    except:
-        carrito= {}
-
     items = []
-    pedido = {'cantidad_del_carrito': 0,'precio_del_carrito': 0}
-    numcarrito = pedido['cantidad_del_carrito']
-        
-    for i in carrito:
-        try:
-            numcarrito += carrito[i]['quantity']
-                
-            producto = Articulos.objects.get(id= i)
-            total =(producto.precio * carrito[i]['quantity'])
-                
-            pedido['precio_del_carrito']+= total
-            pedido['cantidad_del_carrito']+= carrito[i]['quantity']
-                
-            item = {
-                'producto':{
-                    'id': producto.id,
-                    'nombre': producto.nombre,
-                    'precio': producto.precio,
-                    'imagenURL': producto.imagenURL,
-                },
-                'cantidad': carrito[i]['quantity'],
-                'total' : total
-                }
-            items.append(item)
-        except:
-            pass
-    return {'agregados': items, 'total':pedido, 'numcarrito': numcarrito}
+    pedido = {'cantidad_del_carrito': 0, 'precio_del_carrito': 0}
+    numcarrito = 0
+
+    try:
+        carrito = json.loads(request.COOKIES.get('carrito', '{}'))
+    except json.JSONDecodeError:
+        carrito = {}
+
+    # Obtener todos los productos en una sola consulta
+    productos_ids = carrito.keys()
+    productos = Articulos.objects.filter(id__in=productos_ids)
+
+    for producto in productos:
+        cantidad = carrito[str(producto.id)]['quantity']
+        total = producto.precio * cantidad
+
+        numcarrito += cantidad
+        pedido['precio_del_carrito'] += total
+        pedido['cantidad_del_carrito'] += cantidad
+
+        item = {
+            'producto': {
+                'id': producto.id,
+                'nombre': producto.nombre,
+                'precio': producto.precio,
+                'imagenURL': producto.imagenURL,
+            },
+            'cantidad': cantidad,
+            'total': total
+        }
+        items.append(item)
+
+    return {'agregados': items, 'total': pedido, 'numcarrito': numcarrito}
 
 def datosCarrito(request):
     if request.user.is_authenticated:
@@ -58,6 +59,7 @@ def datosCarrito(request):
     return {'agregados': items, 'total':pedido, 'numcarrito': numcarrito}
 
 def ordenUsuarioNoingresado(request, datosrecibidos):
+    
     print('cookie: ', request.COOKIES)
         
     nombre =datosrecibidos['Formulario']['nombre']
@@ -65,8 +67,8 @@ def ordenUsuarioNoingresado(request, datosrecibidos):
     email =datosrecibidos['Formulario']['email']
     telefono =datosrecibidos['Formulario']['telefono']
         
-    datosDelCookie =datosDelCookie(request)
-    items = datosDelCookie['items']
+    datosDelCookie =datosCarrito(request)
+    items = datosDelCookie['agregados']
     cliente, created = Clientes.objects.get_or_create(
             email = email,
             telefono = telefono,
@@ -81,7 +83,7 @@ def ordenUsuarioNoingresado(request, datosrecibidos):
         )
         
     for item in items:
-        producto = Articulos.objects.get(id=item['producto'][id])
+        producto = Articulos.objects.get(id=item['producto']['id'])
             
         elementoPedido = Elementos_pedido.objects.create(
                 producto = producto,
