@@ -19,12 +19,12 @@
         </div>
         <div class="container bg-light">
             <div class="row">
-                {% for producto in productos %}
+                {% for poner in productos %}
                     <div class="col-12 col-md-4 p-5 mt-3">
-                        <a href="#"><img src="{{product.imageURL}}" class="rounded-circle img-fluid border"></a>
-                        <h3 class="text-center mt-3 mb-3">{{ producto.nombre }}</h3>
-                        <h4 class="text-center mt-3 mb-3">Q{{ producto.precio |floatformat:2}}</h4>
-                        <p class="text-center"><a class="btn btn-success">Añadir al Carrito</a></p>
+                        <a ><img src="{{poner.imagenURL}}" class="card-img"></a>
+                        <h3 class="text-center mt-3 mb-3">{{ poner.nombre }}</h3>
+                        <h4 class="text-center mt-3 mb-3">Q{{ poner.precio |floatformat:2}}</h4>
+                        <p class="text-center"><a data-iddelarticulo="{{poner.id}}" data-accion="agregar" class="btn btn-success actualizar-carrito">Añadir al Carrito</a></p>
                     </div>
                     {% if forloop.counter|divisibleby:3 %}
                         </div><div class="row ">

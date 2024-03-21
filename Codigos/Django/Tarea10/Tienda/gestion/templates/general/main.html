@@ -1,6 +1,4 @@
 <!DOCTYPE  html>
-
-
 {% load static %}
 
 <html lang="es">
@@ -10,7 +8,52 @@
         <link rel="stylesheet" type="text/css" href="{% static 'css/efectos.css' %}">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
         <meta name="viewport" content="width=device-width, initial-scale=1">  
-        
+        <script type="text/javascript" >
+            var usuario = '{{request.user}}'
+            function getToken(name) {
+                var cookieValue = null;
+                if (document.cookie && document.cookie !== '') {
+                    var cookies = document.cookie.split(';');
+                    for (var i = 0; i < cookies.length; i++) {
+                        var cookie = cookies[i].trim();
+                        // Does this cookie string begin with the name we want?
+                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+              }
+            var csrftoken = getToken('csrftoken')
+
+            function getCookie(name) {
+                // Split cookie string and get all individual name=value pairs in an array
+                var cookieArr = document.cookie.split(";");
+      
+                // Loop through the array elements
+                for(var i = 0; i < cookieArr.length; i++) {
+                    var cookiePair = cookieArr[i].split("=");
+      
+                    /* Removing whitespace at the beginning of the cookie name
+                    and compare it with the given string */
+                    if(name == cookiePair[0].trim()) {
+                        // Decode the cookie value and return
+                        return decodeURIComponent(cookiePair[1]);
+                    }
+                }
+      
+                // Return null if not found
+                return null;
+            }
+            var carrito = JSON.parse(getCookie('carrito'))
+            if (carrito == undefined){
+                carrito = {}
+                console.log('se creo el cookie!', carrito)
+                document.cookie = 'carrito=' + JSON.stringify(carrito) + ";domain=;path=/"
+            }
+            console.log('Carrito:', carrito)
+        </script>
     </head>
 
     <body>
@@ -50,10 +93,10 @@
                     <div class="navbar align-self-center d-flex">
                         <a class="nav-icon position-relative text-decoration-none" href="{% url 'carrito' %}">
                             <img id="cart-icon" src="{% static 'images/car.png'%}" alt="Carrito de compras">
-                            <span class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark">7</span>
+                            <span class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark">{{numcarrito}}</span>
                         </a>
                         <a class="nav-icon position-relative text-decoration-none" href="#">
-                            <img id="cart-icon" src="{% static 'images/user.png'%}" alt="Carrito de compras">
+                            <img id="user-icon" src="{% static 'images/user.png'%}" alt="usuario">
                             <i class="fa fa-fw fa-user text-dark mr-3"></i>
                             <span class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark">+99</span>
                         </a>
@@ -63,8 +106,6 @@
             </div>
         </nav>
             <!-- fin encabezado -->
-
-
         <br/>
 
         <div class = "container">
@@ -74,7 +115,6 @@
         </div>
         <br/>
 
-         
         <footer class="bg-dark" id="tempaltemo_footer">
             <div class="container">
                 <div class="row">
@@ -128,6 +168,6 @@
         </footer>
  
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-        
+        <script type="text/javascript" src= "{% static 'js/carrito.js' %}"></script>
     </body>
 </html>

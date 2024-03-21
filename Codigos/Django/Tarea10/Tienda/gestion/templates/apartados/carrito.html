@@ -3,53 +3,85 @@
 
 {% block content%}
 <h1>carrito zapatos</h1>
-<div class="row">
-    <div class="col-lg-12">
-        <div class="box-element">
 
-            <a  class="btn btn-outline-dark" href="{% url 'inicio' %}">&#x2190; Continuar comprando</a>
-
-            <br>
-            <br>
-            <table class="table">
-                <tr>
-                    <th><h5>Productos: <strong>3</strong></h5></th>
-                    <th><h5>Total:<strong> Q00</strong></h5></th>
-                    <th>
-                        <a  style="float:right; margin:5px;" class="btn btn-success" href="{% url 'pago' %}">Pagar</a>
-                    </th>
-                </tr>
-            </table>
-
-        </div>
-
+<div class="col-lg-12">
+    <div class="box-element">
+        <a class="btn btn-outline-success" href="#" onclick="history.go(-1); return false;">&#x2190; Continuar comprando</a>
         <br>
-        <div class="box-element">
-            <div class="cart-row">
-                <div style="flex:2"></div>
-                <div style="flex:2"><strong>Producto</strong></div>
-                <div style="flex:1"><strong>Precio</strong></div>
-                <div style="flex:1"><strong>Cantidad</strong></div>
-                <div style="flex:1"><strong>Total</strong></div>
-            </div>
-            {% for item in items %}
-            <div class="cart-row"> 
-                <div style="flex:2"><img class="row-image" src="{% static  'images/arriba.png' %}"></div>
-                <div style="flex:2"><p>{{item.product.name}}</p></div>
-                <div style="flex:1"><p>Q0</p></div>
-                <div style="flex:1">
-                    <p class="quantity">2</p>
-                    <div class="quantity">
-                        <img data-product="{{item.product.id}}" data-action="add" class="chg-quantity update-cart" src="{% static  'images/arriba.png' %}">
-                
-                        <img data-product="{{item.product.id}}" data-action="remove" class="chg-quantity update-cart" src="{% static  'images/abajo.png' %}">
-                    </div>
+        <table class="table table-bg-light">
+            <tr>
+                <th ><h5>Productos: <strong>{{total.cantidad_del_carrito}}</strong></h5></th>
+                <th ><h5>Total:<strong> Q{{total.precio_del_carrito|floatformat:2}}</strong></h5></th>
+                <th >
+                    <a  style="float:right; margin:5px;" class="btn btn-outline-success" href="{% url 'pago' %}">Pagar</a>
+                </th>
+            </tr>    
+        </table>
+    </div>
+</div>
+<section class="bg-light">
+    
+    <br>
+    <div class="container pb-5">
+        <div class="row">
+            {% for poner in agregados %}
+                        
+                <div class="col-12 col-md-4 p-5 mt-3">
+                    <img class="rounded-circle img-fluid border" src="{{poner.producto.imagenURL}}" alt="imagen del producto">
                 </div>
-                <div style="flex:1"><p>Q32</p></div>
-            </div>
+                <div class="col-lg-7 mt-5">
+                        <div class="card">
+                            <div class="card-body">
+                                <h1 class="h2">{{poner.producto.nombre}}</h1>
+                                <p class="h3 py-2">Q{{poner.producto.precio|floatformat:2}}</p>
+
+                                <h6>Description:</h6>
+                                <p>no hay columna en la la tabla de articulos</p>
+                                <ul class="list-inline">
+                                    <li class="list-inline-item">
+                                        <h6>Color no puesto en la tabla de articulos:</h6>
+                                    </li>
+                                    <li class="list-inline-item">
+                                        <p class="text-muted"><strong>Blanco / Negro </strong></p>
+                                    </li>
+                                </ul>
+
+                                <form action="" method="GET">
+                                    <input type="hidden" name="product-title" value="Activewear">
+                                    <div class="row">
+                                        <div class="col-auto">
+                                            <ul class="list-inline pb-3">
+                                                <li class="list-inline-item">Tallas no tiene columna en articulos:
+                                                    <input type="hidden" name="product-size" id="product-size" value="S">
+                                                </li>
+                                                <li class="list-inline-item"><span class="btn btn-success btn-size">4</span></li>
+                                                <li class="list-inline-item"><span class="btn btn-success btn-size">5</span></li>
+                                                <li class="list-inline-item"><span class="btn btn-success btn-size">6</span></li>
+                                                <li class="list-inline-item"><span class="btn btn-success btn-size">7</span></li>
+                                            </ul>
+                                        </div>
+                                        <div class="col-auto">
+                                            <ul class="list-inline pb-3">
+                                                <li class="list-inline-item text-right">
+                                                    Cantidad
+                                                    <input type="hidden" name="product-quanity" id="product-quanity" value="1">
+                                                </li>
+                                                <li class="list-inline-item"><span data-iddelarticulo="{{poner.producto.id}}" data-accion="quitar" class="btn btn-success actualizar-carrito">-</span></li>
+                                                <li class="list-inline-item"><p class="h3 py-2">{{poner.cantidad}}</p></li>
+                                                <li class="list-inline-item"><span data-iddelarticulo="{{poner.producto.id}}" data-accion="agregar" class="btn btn-success actualizar-carrito">+</span></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="row pb-3">
+                                        <h5>Total:<strong>Q{{poner.precio_total|floatformat:2}}</strong></h5>
+                                    </div>
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
             {% endfor %}
         </div>
     </div>
-</div>
-
+</section>
 {% endblock content %}

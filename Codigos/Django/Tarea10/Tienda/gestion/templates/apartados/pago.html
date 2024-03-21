@@ -2,11 +2,14 @@
 {% load static %}
 
 {% block content %}
-    <div class="row">
+<div class="row">
     <div class="col-lg-6">
-        <div class="box-element" id="form-wrapper">
+        <div class="box-element bg-light" id="form-wrapper">
             <form id="form">
-                <div id="user-info">
+                <div id="usuario-info">
+                    <hr>
+                    <h2>Datos del cliente:</h2>
+                    <hr>
                     <div class="form-field">
                         <input required class="form-control" type="text" name="nombre" placeholder="Nombre..">
                     </div>
@@ -14,16 +17,16 @@
                         <input required class="form-control" type="address" name="direccion" placeholder="Direccion">
                     </div>
                     <div class="form-field">
-                        <input required class="form-control" type="email" name="email" placeholder="Email..">
+                        <input required class="form-control" type="email" name="email" placeholder="Correo">
                     </div>
                     <div class="form-field">
                         <input required class="form-control" type="stringformat" name="telefono" placeholder="Telefono">
                     </div>
                 </div>
                 
-                <div id="shipping-info">
+                <div id="entrega-info">
                     <hr>
-                    <p>Informacion de entrega:</p>
+                    <h2>Informacion de entrega:</h2>
                     <hr>
                     <div class="form-field">
                         <input class="form-control" type="text" name="direccion" placeholder="Direccion..">
@@ -40,114 +43,144 @@
                 </div>
                 
                 <hr>
-                <input id="form-button" class="btn btn-success btn-block" type="submit" value="Continuar">
+                <input id="form-continuar" class="btn btn-success btn-block" type="submit" value="Continuar">
             </form>
         </div>
 
         <br>
-        <div class="box-element hidden" id="payment-info">
+        <div class="box-element hidden" id="paypal-info">
             <small>Opciones de Paypal</small>
-            <button id="make-payment">Hacer pago</button>
+            <button class="btn btn-outline-success" id="hacer-pago">Hacer pago</button>
         </div>
         
     </div>
 
-    <div class="col-lg-6">
-        <div class="box-element">
-            <a  class="btn btn-outline-dark" href="{% url 'carrito' %}">&#x2190; Regresar al carrito</a>
+    <div class="col-lg-6 ">
+        <div class="box-element bg-light">
+            <a  class="btn btn-outline-success" href="{% url 'carrito' %}">&#x2190; Regresar al carrito</a>
             <hr>
             <h3>Resumen de la orden</h3>
             <hr>
-            {% for item in items %}
-            <div class="cart-row">
-                <div style="flex:2"><img class="row-image" src="{% static  'images/arriba.png' %}"></div>
-                <div style="flex:2"><p>vamos</p></div>
-                <div style="flex:1"><p>Q 1</p></div>
-                <div style="flex:1"><p>x3</p></div>
+            <ul class="list-inline" style="text-align: center;">
+                <h4 class="list-inline-item text-right">Productos: </h4>
+                <h4 class="list-inline-item ">{{total.cantidad_del_carrito}} </h4>
+                <h4 class="list-inline-item text-right">Total: </h4>
+                <h4 class="list-inline-item">Q{{total.precio_del_carrito|floatformat:2}}</h4>
+            </ul>
+            
+            <div class="row">
+                {% for poner in agregados %}
+                            
+                    <div class="col-10 col-md-4 p-6 mt-1">
+                        <img class="rounded-circle img-fluid border" src="{{poner.producto.imagenURL}}" alt="imagen del producto">
+                    </div>
+                    <div class="col-lg-7 mt-1">
+                        <div class="card">
+                            <div class="card-body">
+                                <h1 class="h2">{{poner.producto.nombre}}</h1>
+                                <ul class="list-inline">
+                                    <li class="list-inline-item text-right">Precio:</li>
+                                    <li class="list-inline-item"><p class="h3 py-1">Q{{poner.producto.precio|floatformat:2}}</p></li>
+                                    <li class="list-inline-item text-right">Cantidad:</li>
+                                    <li class="list-inline-item"><p class="h3 py-1">{{poner.cantidad}}</p></li>
+                                    <li class="list-inline-item text-right">Total:</li>
+                                    <li class="list-inline-item"><p class="h3 ">Q{{poner.precio_total|floatformat:2}}</p></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
             </div>
-            {% endfor %}
-            <h5>Productos: 2 </h5>
-            <h5>Total:   Q100</h5>
         </div>
     </div>
 </div>
-<!--
+
     <script type="text/javascript">
-        var shipping = '{{order.shipping}}'
-        var total = '{{order.get_cart_total}}'
-
-        if (shipping == 'False'){
-            document.getElementById('shipping-info').innerHTML = ''
-        }
-
-        if (user != 'AnonymousUser'){
-            document.getElementById('user-info').innerHTML = ''
-        }
-        if (shipping == 'False' && user != 'AnonymousUser'){
-            document.getElementById('form-wrapper').classList.add("hidden");
-            document.getElementById('payment-info').classList.remove("hidden");
-        }
+        var total = '{{total.precio_del_carrito}}'
 
         var form = document.getElementById('form')
+        
+        if (usuario != 'AnonymousUser'){
+            document.getElementById('usuario-info').innerHTML = ''
+            //document.getElementById('entrega-info').innerHTML = ''
+            //document.getElementById('form-wrapper').classList.add("hidden");//oculta el formulario de infromacion de entrega
+            //document.getElementById('paypal-info').classList.remove("hidden");
+        }
+
+        if (total <= 0) {
+            alert('El total es cero, por favor compra al menos un producto.');
+            window.location.href = "{% url 'inicio' %}"
+        }
         form.addEventListener('submit', function(e){
-            e.preventDefault()
-            console.log('Formulario subido')
-            document.getElementById('form-button').classList.add("hidden");
-            document.getElementById('payment-info').classList.remove("hidden");
-        })
-        document.getElementById("make-payment").addEventListener('click', function(e){
-            submitFormData()
-        })
-
-        function submitFormData(){
-            console.log('Boton de pago clickeado')
-
-            var userFormData = {
-                'name':null,
-                'email':null,
-                'total':total,
-            }
-
-            var shippingInfo = {
-                'address':null,
-                'city':null,
-                'state':null,
-                'zipcode':null,
-            }
+            e.preventDefault();
             
-            if (shipping != 'False'){
-                shippingInfo.address = form.address.value
-                shippingInfo.city = form.city.value
-                shippingInfo.state = form.state.value
-                shippingInfo.zipcode = form.zipcode.value
+            document.getElementById('form-continuar').classList.add("hidden");
+            document.getElementById('paypal-info').classList.remove("hidden");
+            console.log('Botón continuar clickeado');
+        });
+        
+        document.getElementById("hacer-pago").addEventListener('click', function(e){
+            enviardatosformu();
+        });
+        
+        function enviardatosformu(){
+            console.log('Botón de pago clickeado');
+            
+            var datousuarioform = {
+                'nombre': null,
+                'direccion': null,
+                'email': null,
+                'telefono': null,
+                'total': total,
+            };
+            var informacionentrega = {
+                'direccion': null,
+                'departamento': null,
+                'municipio': null,
+                'zona': null,
+            };
+        
+        
+            // Si el usuario es anónimo, asigna los valores del formulario
+            if (usuario == 'AnonymousUser'){
+                
+                datousuarioform.nombre = form.nombre.value
+                datousuarioform.direccion = form.direccion.value
+                datousuarioform.email = form.email.value;
+                datousuarioform.telefono = form.telefono.value
             }
-
-            if (user == 'AnonymousUser'){
-                userFormData.name = form.name.value
-                userFormData.email = form.email.value
-            }
-            var url = "/process_order/"
-	    	fetch(url, {
-	    		method:'POST',
-	    		headers:{
-	    			'Content-Type':'applicaiton/json',
-	    			'X-CSRFToken':csrftoken,
-	    		}, 
-	    		body:JSON.stringify({'form':userFormData, 'shipping':shippingInfo}),
-	    		
-	    	})
-	    	.then((response) => response.json())
-	    	.then((data) => {
-				console.log('Success:', data);
-				alert('Transaction completed');  
-
-				cart = {}
-				document.cookie ='cart=' + JSON.stringify(cart) + ";domain=;path=/"
-
+        
+            // Los valores de envío se asignan directamente, ya que shipping siempre es True
+            informacionentrega.direccion = form.direccion.value
+            informacionentrega.departamento = form.departamento.value
+            informacionentrega.municipio = form.municipio.value
+            informacionentrega.zona = form.zona.value
+            
+            console.log('Datos del usuario:', datousuarioform);
+            console.log('Información de entrega:', informacionentrega);
+            var url = "/procesarOrden/";
+            fetch(url, {
+                method:'POST',
+                headers:{
+                    'Content-Type':'application/json',
+                    'X-CSRFToken':csrftoken,
+                }, 
+                body:JSON.stringify({'Formulario': datousuarioform, 'Ubicacion': informacionentrega}),
+                
+            })
+            .then((response) => response.json())
+            .then((datosrecibidos) => { 
+                console.log('Completo:', datosrecibidos); 
+                alert('Transacción Completada');  
+                
+				carrito = {}
+				document.cookie ='carrito=' + JSON.stringify(carrito) + ";domain=;path=/"
+                
 				window.location.href = "{% url 'inicio' %}"
 
-				})
-
+				});
+              
         }
-    </script>-->
+        
+    </script>
 {% endblock content %}

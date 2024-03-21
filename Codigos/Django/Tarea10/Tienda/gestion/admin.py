@@ -9,12 +9,12 @@ class clientesadmin(admin.ModelAdmin):
 
 class articulosadmin(admin.ModelAdmin):
     #list_filter= ("seccion")
-    list_display=("nombre", "seccion", "precio")
+    list_display=("nombre", "id", "seccion", "precio")
     #search_fields=("nombre", "seccion", "precio")
     
 class pedidosadmin(admin.ModelAdmin):
     #list_filter= ("fecha", "entregado")
-    list_display=("cliente", "nombre", "fecha", "entregado")
+    list_display=("cliente", "id", "fecha", "entregado")
     #date_hierarchy=("fecha")
     
 class elementosadmin(admin.ModelAdmin):
@@ -23,8 +23,8 @@ class elementosadmin(admin.ModelAdmin):
 class entregasadmin(admin.ModelAdmin):
     list_display=("cliente", "pedido", "direccion", "departamento", "municipio", "zona", "fecha")
 
-admin.site.register(clientes, clientesadmin)
-admin.site.register(articulos, articulosadmin)
-admin.site.register(pedidos, pedidosadmin)
-admin.site.register(elementos_pedido, elementosadmin)
-admin.site.register(entregas, entregasadmin)
+admin.site.register(Clientes, clientesadmin)
+admin.site.register(Articulos, articulosadmin)
+admin.site.register(Pedidos, pedidosadmin)
+admin.site.register(Elementos_pedido, elementosadmin)
+admin.site.register(Entregas, entregasadmin)

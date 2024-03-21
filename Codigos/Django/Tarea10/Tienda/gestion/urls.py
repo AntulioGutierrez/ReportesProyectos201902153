@@ -10,6 +10,7 @@ urlpatterns = [
     path('hombres/', views.hombres, name="hombres"),
     path('carrito/', views.carrito, name="carrito"),
     path('pago/', views.pago, name="pago"),
-
+    path('actualizarItem/', views.actualizarItem, name="actualiarItem"),
+    path('procesarOrden/', views.procesarOrden, name="procesarOrden"),    
     # ... otras URLs
 ]
