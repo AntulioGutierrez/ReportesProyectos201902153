@@ -1,0 +1,35 @@
+{% extends "main.html" %}
+
+{% block title %} Ver Contactos {% endblock %}
+
+{% block contenido %}
+<div class="d-grid gap-2 col-6 mx-auto position-absolute top-50 start-50 translate-middle">
+    <div class="grid text-center">
+        <p class="h3 text-warning" >Para Modificar {{usuario}} Selecione Modificar </p>
+        <table  class="table table-dark" >
+            <thead>
+                <tr>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Dirección</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Teléfono</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for poner in contactos %}
+                    <tr onclick="seleccionarContacto(this);">
+                        <td scope="row"><a class="nav-link ">{{ poner.nombre }}</a></td>
+                        <td scope="row"><a class="nav-link ">{{ poner.direccion }}</a></td>
+                        <td scope="row"><a class="nav-link ">{{ poner.email }}</a></td>
+                        <td scope="row"><a class="nav-link ">{{ poner.telefono }}</a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <td scope="row"><a class="btn btn-outline-light d-inline-flex focus-ring py-1 px-2 text-decoration-none border rounded-2" href="{%  url 'editar' %}">Modificar</a></td>
+    </div>
+    <!-- buscar_contacto.html -->
+    
+</div>
+
+{% endblock  %}

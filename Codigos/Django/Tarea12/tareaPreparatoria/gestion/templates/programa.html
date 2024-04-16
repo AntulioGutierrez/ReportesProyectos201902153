@@ -1,0 +1,32 @@
+{% extends "main.html" %}
+
+{% block title %} programa {% endblock %}
+
+{% block contenido %}
+<div class="d-grid gap-2 col-6 mx-auto position-absolute top-50 start-50 translate-middle">
+
+  <div class="grid text-center">
+    <div style="g-col-6 background-color: black;">
+      <form method="post">
+          {% csrf_token %}
+          <label for="nombre" style="color: white;">Nombre:</label>
+          <input class="form-control" type="text" name="nombre" >
+          <br>
+          <label for="direccion" style="color: white;">Dirección:</label>
+          <input type="text" class="form-control" name="direccion" >
+          <br>
+          <label for="email" style="color: white;">Email:</label>
+          <input type="email" class="form-control" name="email" >
+          <br>
+          <label for="telefono" style="color: white;">Teléfono:</label>
+          <input type="text" class="form-control" name="telefono" >
+          <br>
+          <input class="btn btn-outline-success" type="submit" value="Crear contacto" >
+          <br>
+          <button class="btn btn-outline-warning" type="button"><a class="nav-link" href="{%  url 'ver' %}">Ver Contactos</a></button>
+      </form>
+     
+    </div>
+  </div>
+</div>
+{% endblock  %}

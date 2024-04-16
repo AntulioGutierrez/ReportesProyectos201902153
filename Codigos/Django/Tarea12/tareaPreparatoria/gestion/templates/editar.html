@@ -1,0 +1,131 @@
+{% extends "main.html" %}
+
+{% block title %} Editar {% endblock %}
+
+{% block contenido %}
+<div class="d-grid gap-2 col-6 mx-auto position-absolute top-50 start-50 translate-middle ">
+    <nav class="navbar bg-dark border-bottom border-body" data-bs-theme="dark">
+        <form class="d-flex" role="search"  method="post">
+            {% csrf_token %}
+            <input class="form-control me-2" name ="nombre" type="text" id="buscarNombre" placeholder="Filtrar por Nombre...">
+            <input class="form-control me-2" name ="direccion" type="text" id="buscarDireccion" placeholder="Filtrar por Direccion...">
+            <input class="form-control me-2" name ="email" type="text" id="buscarEmail" placeholder="Filtrar por Email...">
+            <input class="form-control me-2" name ="telefono" type="text" id="buscarTelefono" placeholder="Filtrar por Telefono...">
+        </form>
+    </nav>
+    <table class="table table-dark" id="miTabla" >
+        <thead>
+            <tr>
+                <th scope="col">Nombre {{usuario}}</th>
+                <th scope="col">Dirección</th>
+                <th scope="col">Email</th>
+                <th scope="col">Teléfono</th>
+            </tr>
+        </thead>
+        <tbody id="filas">
+            
+            {% for poner in contacto %}
+                <tr>
+                    <td scope="row"><a class="nav-link">{{ poner.nombre }}</a></td>
+                    <td scope="row"><a class="nav-link">{{ poner.direccion }}</a></td>
+                    <td scope="row"><a class="nav-link">{{ poner.email }}</a></td>
+                    <td scope="row"><a class="nav-link">{{ poner.telefono }}</a></td>
+                </tr>
+            {% endfor %}
+        
+        </tbody>
+    </table>
+
+    <form class="d-flex" role="editar"  method="post">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col">
+                <label for="inputNombre" class="form-label" style="color: white;">Nuevo nombre</label>
+                <input type="text" class="form-control" placeholder="Nombre nuevo" name = "nuevoNombre" >
+            </div>
+            <div class="col">
+                <label for="inputDireccion" class="form-label" style="color: white;">Nueva direccion </label>
+                <input type="text" class="form-control" placeholder="Direccion nueva" name = "nuevaDireccion" >
+            </div>
+            <div class="col">
+                <label for="inputEmail" class="form-label" style="color: white;">Nuevo Email </label>
+                <input type="text" class="form-control" placeholder="Email nuevo" name = "nuevoEmail" >
+            </div>
+            <div class="col">
+                <label for="inputTelefono" class="form-label" style="color: white;">Nuevo Telefono... </label>
+                <input type="text" class="form-control" placeholder="Telefono nuevo" name = "nuevoTelefono" >
+            </div>
+            <br>
+            <div class="row">
+                <input class="btn btn-outline-success" type="submit" value="Modificar contacto" >
+            </div>
+            
+        </div>
+    </form>
+
+    <script>
+        // Función para filtrar la tabla por nombre
+        document.getElementById('buscarNombre').addEventListener('input', function() {
+            const filterNombre = this.value.toLowerCase();
+            const rows = document.getElementById('filas').getElementsByTagName('tr');
+            for (let i = 0; i < rows.length; i++) {
+                const nombre = rows[i].getElementsByTagName('td')[0].textContent.toLowerCase();
+                rows[i].style.display = nombre.includes(filterNombre) ? '' : 'none';
+            }
+        });
+
+        // Función para filtrar la tabla por dirección
+        document.getElementById('buscarDireccion').addEventListener('input', function() {
+            const filterDireccion = this.value.toLowerCase();
+            const rows = document.getElementById('filas').getElementsByTagName('tr');
+            for (let i = 0; i < rows.length; i++) {
+                const direccion = rows[i].getElementsByTagName('td')[1].textContent.toLowerCase();
+                rows[i].style.display = direccion.includes(filterDireccion) ? '' : 'none';
+            }
+        });
+
+        // Función para filtrar la tabla por email
+        document.getElementById('buscarEmail').addEventListener('input', function() {
+            const filterEmail = this.value.toLowerCase();
+            const rows = document.getElementById('filas').getElementsByTagName('tr');
+            for (let i = 0; i < rows.length; i++) {
+                const email = rows[i].getElementsByTagName('td')[2].textContent.toLowerCase();
+                rows[i].style.display = email.includes(filterEmail) ? '' : 'none';
+            }
+        });
+
+        // Función para filtrar la tabla por teléfono
+        document.getElementById('buscarTelefono').addEventListener('input', function() {
+            const filterTelefono = this.value.toLowerCase();
+            const rows = document.getElementById('filas').getElementsByTagName('tr');
+            for (let i = 0; i < rows.length; i++) {
+                const telefono = rows[i].getElementsByTagName('td')[3].textContent.toLowerCase();
+                rows[i].style.display = telefono.includes(filterTelefono) ? '' : 'none';
+            }
+        });
+
+        //-- Suponiendo que tienes una tabla con un id 'miTabla'
+        const tabla = document.getElementById('miTabla');
+        const filas = tabla.getElementsByTagName('tr');
+
+        // Función para manejar el evento de clic en una fila
+        function obtenerDatosFila(event) {
+        const fila = event.target.parentNode;
+        let datos = [];
+        for (let celda of fila.cells) {
+            datos.push(celda.textContent);
+        }
+        console.log(datos); // Aquí puedes hacer lo que necesites con los datos
+        }
+
+        // Agregar el evento de clic a cada fila
+        for (let fila of filas) {
+        fila.addEventListener('click', obtenerDatosFila);
+        }
+
+    </script>
+</div>
+
+
+
+{% endblock  %}

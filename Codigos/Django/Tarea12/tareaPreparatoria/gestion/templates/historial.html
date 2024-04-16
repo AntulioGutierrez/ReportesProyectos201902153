@@ -1,0 +1,27 @@
+{% extends "main.html" %}
+
+{% block title %} historial {% endblock %}
+
+{% block contenido %}
+<div class="d-grid gap-2 col-6 mx-auto position-absolute top-50 start-50 translate-middle">
+
+    <table class="table table-dark">
+        <thead>
+          <tr>
+              <th scope="col">Nombre</th>
+              <th scope="col">accion</th>
+              <th scope="col">fecha</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for poner in accion %}
+                <tr>
+                    <td >{{ poner.usuario }}</td>
+                    <td>{{ poner.accion }}</td>
+                    <td>{{ poner.fecha }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock  %}

@@ -1,0 +1,17 @@
+{% extends "main.html" %}
+
+{% block title %} borrar {% endblock %}
+
+{% block contenido %}
+<div class="d-grid gap-2 col-6 mx-auto position-absolute top-50 start-50 translate-middle">
+
+  <form method="post">
+    {% csrf_token %}
+    <label for="nombre" style="color: white;">Nombre:</label>
+    <input class="form-control" type="text" name="nombre" >
+    <br>
+    <br>
+    <input class="btn btn-outline-success" type="submit" value="Eliminar contacto"  href="{%  url 'ver' %}">
+</form>
+</div>
+{% endblock  %}

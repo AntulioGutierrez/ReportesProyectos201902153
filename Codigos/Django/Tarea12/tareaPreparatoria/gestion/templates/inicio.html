@@ -1,0 +1,13 @@
+{% extends "main.html" %}
+
+{% block title %} Menu {% endblock %}
+
+{% block contenido %}
+
+<div class="d-grid gap-2 col-6 mx-auto position-absolute top-50 start-50 translate-middle">
+    <button class="btn btn-outline-info" type="button"><a class="nav-link" href="{%  url 'programa' %}">Ejecuion del programa</a></button>
+    <button class="btn btn-outline-info" type="button"><a class="nav-link" href="{%  url 'historial' %}">Historial</a></button>
+    <button class="btn btn-outline-info" type="button"><a class="nav-link" href="{%  url 'borrar' %}">Borrar datos</a></button>
+    <button class="btn btn-outline-infoy" type="button"><a class="nav-link" href="{%  url 'salir' %}">Salir</a></button>
+  </div>
+{% endblock  %}
